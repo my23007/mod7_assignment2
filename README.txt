@@ -142,30 +142,77 @@ for msg in messages:
 # Close the client connection
 client.close()
 
+Code Structure
+create_message(content): Appends SHA-256 hash to the message for integrity.
+verify_message(message): Verifies the integrity of a received message by comparing hashes.
+Controller Class:
+Sets up a TCP socket server to listen for client connections.
+Receives messages from clients and verifies integrity.
+Client Class:
+Connects to the controller and sends messages with simulated tampering, delay, and loss.
+Parameters for tampering probability, loss probability, and delay range can be customized.
+
+Configuration
+Client Parameters
+The Client class accepts the following parameters for network simulation:
+
+tamper_prob (float): Probability of message tampering (default: 0.2).
+loss_prob (float): Probability of packet loss (default: 0.2).
+delay_range (tuple): Range of delay (in seconds) for each message (default: (0.5, 2.0)).
+You can adjust these parameters to simulate varying network conditions.
+
+Controller Setup
+The Controller class listens for connections on a specified HOST and PORT. Modify these constants if needed for different network setups.
+
 Usage
 Run the Controller (Server): The Controller runs in a separate thread, listening for incoming connections from clients.
 
 Configure and Run the Client: The Client connects to the Controller and sends a series of test messages with simulated network issues, based on user-defined configurations.
 
 Setup and Execution
-.
-.
-.
 
-Sample output:
+myounes@myouneslap MINGW64 ~
+$ git clone https://github.com/my23007/mod7_assignment2.git
+Cloning into 'mod7_assignment2'...
+remote: Enumerating objects: 10, done.
+remote: Counting objects: 100% (10/10), done.
+remote: Compressing objects: 100% (8/8), done.
+remote: Total 10 (delta 1), reused 10 (delta 1), pack-reused 0 (from 0)
+Receiving objects: 100% (10/10), 4.53 KiB | 1.51 MiB/s, done.
+Resolving deltas: 100% (1/1), done.
 
+myounes@myouneslap MINGW64 ~
+$ cd mod7_assignment2
+
+myounes@myouneslap MINGW64 ~/mod7_assignment2 (main)
+$ ls
+README.txt  mod7_assignment2.py
+
+$ python mod7_assignment2.py
 Controller listening for connections...
 [Client] Connected to controller.
 [Client] Message tampered.
-[Client] Simulated message loss.
+[Client] Simulating delay of 1.96 seconds.
 [Controller] Client connected.
-[Client] Simulated message loss.
-[Client] Simulating delay of 1.79 seconds.
-[Controller] Valid message received: 'Status Update' | Latency: 0.00 ms[Client] Sent message: 'Status Update'
+[Controller] Integrity check failed for received message.
+[Client] Sent message: 'Hello Controller'
+[Client] Simulating delay of 0.59 seconds.
+[Client] Sent message: 'Request Data'
+[Controller] Valid message received: 'Request Data' | Latency: 0.00 ms
+[Client] Simulating delay of 0.74 seconds.
+[Controller] Valid message received: 'Status Update' | Latency: 0.00 ms
+[Client] Sent message: 'Status Update'
+[Client] Simulating delay of 1.08 seconds.
+[Client] Sent message: 'Shutdown Signal'
+[Controller] Valid message received: 'Shutdown Signal' | Latency: 0.00 ms
 
-[Client] Message tampered.
-[Client] Simulating delay of 0.82 seconds.
-[Controller] Integrity check failed for received message.[Client] Sent message: 'Shutdown Signal'
+
+
+Configure Network Conditions:
+The parameters tamper_prob, loss_prob, and delay_range in the Client class can be adjusted to simulate different levels of network issues. For example:
+tamper_prob = 0.3      # 30% chance of tampering
+loss_prob = 0.3        # 30% chance of message loss
+delay_range = (0.5, 2.0) # Delay range between 0.5 and 2 seconds
 
 
 Related work
